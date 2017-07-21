@@ -231,9 +231,11 @@ public class SalesServiceTest {
 		Sale sale = new Sale(typePie, costPie);
 		testService.recordSale(sale, 50);
 		
+		// Test the serviced pauses after 50 messages.
 		SalesMessagesService.State currState = testService.getCurrState();
 		assertEquals(SalesMessagesService.State.PAUSED, currState);
 		
+		// Test the service no longer accepts messages once paused.
 		try {
 			testService.recordSale(sale);
 			// We would expect an exception to be thrown at this point, so fail if one
@@ -409,6 +411,8 @@ public class SalesServiceTest {
 		testService.adjustSale(salePie, pieAdjustmentFour, pieChangeFour);
 		testService.adjustSale(salePie, pieAdjustmentFive, pieChangeFive);
 		
+		// Check that the correct number of modifications are recorded, and that all operations
+		// are in the expected order.
 		assertEquals(3, testService.getSaleModifications().getModifiedTypes().size());
 		assertEquals(3, testService.getSaleModifications().getModificationsForType(typeApple).size());
 		assertEquals(2, testService.getSaleModifications().getModificationsForType(typePear).size());
@@ -417,15 +421,43 @@ public class SalesServiceTest {
 				testService.getSaleModifications().getModificationsForType(typeApple).get(0).getOperation());
 		assertEquals(appleChangeOne, 
 				testService.getSaleModifications().getModificationsForType(typeApple).get(0).getValue());
+		assertEquals(appleAdjustmentTwo, 
+				testService.getSaleModifications().getModificationsForType(typeApple).get(1).getOperation());
+		assertEquals(appleChangeTwo, 
+				testService.getSaleModifications().getModificationsForType(typeApple).get(1).getValue());
+		assertEquals(appleAdjustmentThree, 
+				testService.getSaleModifications().getModificationsForType(typeApple).get(2).getOperation());
+		assertEquals(appleChangeThree, 
+				testService.getSaleModifications().getModificationsForType(typeApple).get(2).getValue());
+		assertEquals(pearAdjustmentOne, 
+				testService.getSaleModifications().getModificationsForType(typePear).get(0).getOperation());
+		assertEquals(pearChangeOne, 
+				testService.getSaleModifications().getModificationsForType(typePear).get(0).getValue());
 		assertEquals(pearAdjustmentTwo, 
 				testService.getSaleModifications().getModificationsForType(typePear).get(1).getOperation());
 		assertEquals(pearChangeTwo, 
 				testService.getSaleModifications().getModificationsForType(typePear).get(1).getValue());
+		assertEquals(pieAdjustmentOne, 
+				testService.getSaleModifications().getModificationsForType(typePie).get(0).getOperation());
+		assertEquals(pieChangeOne, 
+				testService.getSaleModifications().getModificationsForType(typePie).get(0).getValue());
+		assertEquals(pieAdjustmentTwo, 
+				testService.getSaleModifications().getModificationsForType(typePie).get(1).getOperation());
+		assertEquals(pieChangeTwo, 
+				testService.getSaleModifications().getModificationsForType(typePie).get(1).getValue());
+		assertEquals(pieAdjustmentThree, 
+				testService.getSaleModifications().getModificationsForType(typePie).get(2).getOperation());
+		assertEquals(pieChangeThree, 
+				testService.getSaleModifications().getModificationsForType(typePie).get(2).getValue());
 		assertEquals(pieAdjustmentFour, 
 				testService.getSaleModifications().getModificationsForType(typePie).get(3).getOperation());
 		assertEquals(pieChangeFour, 
 				testService.getSaleModifications().getModificationsForType(typePie).get(3).getValue());
-		
+		assertEquals(pieAdjustmentFive, 
+				testService.getSaleModifications().getModificationsForType(typePie).get(4).getOperation());
+		assertEquals(pieChangeFive, 
+				testService.getSaleModifications().getModificationsForType(typePie).get(4).getValue());
+
 		testService.recordSale(saleApple);
 		assertEquals(SalesMessagesService.State.PAUSED, testService.getCurrState());
 		

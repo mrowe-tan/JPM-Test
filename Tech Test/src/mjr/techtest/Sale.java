@@ -3,7 +3,8 @@
  * A "sale" consists of a type of product that has been sold, and an associated
  * value - i.e. cost for that product.
  * 
- * Note that to prevent possible numerical errors, costs are recorded in pence.
+ * Note that to prevent possible errors occurring when performing mathematical
+ * operations, costs are recorded in pence.
  */
 package mjr.techtest;
 
@@ -23,9 +24,10 @@ public class Sale {
 	/**
 	 * Create a record for an product whose sale is to be recorded.
 	 * 
-	 * @param productType  The type of product sold.  Pre-registration of this type is 
-	 *                         not currently required.
-	 * @param value        The cost of the product.
+	 * @param productType  The type of product sold.  Pre-registration of this 
+	 *                         type is not currently required.
+	 * @param value        The cost of purchasing a single instance of the 
+	 *                         product, in pence.
 	 * @throws SalesException
 	 */
 	public Sale(String productType, int value) throws SalesException {
